@@ -1,6 +1,16 @@
-import java.util.HashMap;
+/*
+Gordon Gregory
+CSPC 1060
+May 2
+Player.java
+ */
 
+/**
+ * Handles all the player stuff
+ */
 public class Player {
+
+    //Player stats and states
     private int[] playerPos = new int[2];
     private int health;
     private boolean bossKey;
@@ -9,6 +19,10 @@ public class Player {
 
     private boolean moved;
 
+    /**
+     * used to decide if we should redraw map
+     * @return boolean to say yes redraw map
+     */
     public boolean getMoved(){
         boolean placeHolder = moved;
         moved = false;
@@ -62,6 +76,11 @@ public class Player {
         return bossKey;
     }
 
+
+    /**
+     * caled from keyinput for jbutton stuff moves the player
+     * @param move move directon as a string
+     */
     public void movePlayer(String move){
         switch (move){
             case "UP":
@@ -90,6 +109,8 @@ public class Player {
         }
     }
 
+
+    //these set the player start positon in a new room
     public void entrancePlayerPos(Room room){
         playerPos[0] = room.getHeight() + 1;
         playerPos[1] = room.getEntrance();
@@ -99,6 +120,9 @@ public class Player {
         playerPos[1] = room.getExit();
     }
 
+    /**
+     * another button action to print stats
+     */
     public void printStats(){
         if(getBossKey()){
             System.out.printf("Hearts: %d%nBoss Key Frags: Completed%n",getHealth());
@@ -111,6 +135,10 @@ public class Player {
         playerPos[0] = startRoom.getHeight() + 1;
         playerPos[1] = startRoom.getEntrance();
     }
+
+    /**
+     * basic constructor would like to add overload to change hears and stuff
+     */
     Player(){
         health = 3;
         bossKey = false;

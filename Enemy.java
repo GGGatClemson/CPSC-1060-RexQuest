@@ -1,6 +1,18 @@
+/*
+Gordon Gregory
+CSPC 1060
+May 2
+Enemy.java
+ */
+
 import java.util.Random;
 
+/**
+ * Creates and dictates enemy class
+ */
 public class Enemy {
+
+    //enemy stats
     private int moveSpeed;
 
     private boolean alive;
@@ -67,6 +79,12 @@ public class Enemy {
         }
     }
 
+    /**
+     * Constructor for enemy
+     * @param enemyLevel dictaes how fast it moves maybe more later
+     * @param height dictates room hieght for starting position
+     * @param width dictates room width for starting position
+     */
     Enemy(int enemyLevel,int height, int width){
         Random rand = new Random(System.currentTimeMillis());
         this.moveSpeed = enemyLevel;

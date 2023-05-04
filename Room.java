@@ -1,6 +1,14 @@
+/*
+Gordon Gregory
+CSPC 1060
+May 2
+Room.java
+ */
+
 import java.util.ArrayList;
 
 public class Room {
+    //all the basic stuff a room has
     final private int entrance;
     final private int exit;
     final private String roomName;
@@ -10,6 +18,8 @@ public class Room {
     final private int width;
 
     final private int roomLevel;
+
+    // I call the enemys in here so they keep their state when changing rooms
     private Enemy enemy1;
     private Enemy enemy2;
     private boolean stairs;
@@ -22,6 +32,7 @@ public class Room {
 
     final private int[] chestPos = new int[2];
 
+    //builds the room and sets stairs and chest position
     public boolean getStairs(){
         return stairs;
     }
@@ -81,6 +92,16 @@ public class Room {
         return layout;
     }
 
+    /**
+     * The real bread and butter of this program, the room holds everything together
+     * @param name Gives room name, currently jsut room+number but if i add shops or somthing i would change
+     * @param layout A 2d arraylist with strings that holds how the room looks
+     * @param entrance sets the entrace to a room
+     * @param exit sets the exit to a room
+     * @param height sets room hight
+     * @param width sets room width
+     * @param roomLevel roomlevel is a placehodler so i can create harder rooms as level increases in future
+     */
     Room(String name, ArrayList<ArrayList<String>> layout, int entrance, int exit, int height, int width, int roomLevel) {
         roomName = name;
         this.roomLevel = roomLevel;

@@ -1,3 +1,10 @@
+/*
+Gordon Gregory
+CSPC 1060
+May 2
+KeyInput.java
+ */
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +22,11 @@ public class KeyInput {
     private JButton left = new JButton("LEFT");
     private JButton right = new JButton("RIGHT");
     private JButton stat = new JButton("Stats");
+
+    /**
+     * builds the JFrame and adds teh buttons to JPanel so you dont have to type or something else, super cool to learn
+     * @param player
+     */
     KeyInput(Player player){
         JFrame win = new JFrame();
         win.setVisible(true);
@@ -22,7 +34,7 @@ public class KeyInput {
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         win.setFocusable(true);
 
-
+        //just some basic button sizing and postion, would like to add custom icons
         up.setBounds(110,10,80,40);
         down.setBounds(110,60,80,40);
         left.setBounds(15,60,80,40);
@@ -38,6 +50,8 @@ public class KeyInput {
         panel.add(right);
         panel.add(stat);
 
+
+        //These check for button presses and then tell the player how to move
         win.add(panel);
         up.addActionListener(new ActionListener() {
             @Override

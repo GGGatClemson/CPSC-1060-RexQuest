@@ -1,6 +1,10 @@
+/*
+Gordon Gregory
+CSPC 1060
+May 2
+Main.java
+ */
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -8,8 +12,13 @@ import java.lang.Thread;
 
 public class Main {
 
+
+    /**
+     * Just the intro info
+     */
     public static void startPrint(){
-        System.out.println("Welcome to Rex Quest\nA semirogue-like tower climber\nCollect 3 keys per floor and then head up the stairs" +
+        System.out.println("Welcome to Rex Quest\nA semirogue-like tower climber\nCollect 3 keys per floor and then head up the stairs"+
+                "\n the game has no end just high scores. You will lose a heart if an enemy touches you"+
                 "\nwhen you quit playing the game will print your map seeds and scores.");
     }
     /**
@@ -87,6 +96,10 @@ public class Main {
         return bigMap;
     }
 
+    /**
+     * Prints all the generated maps, used for debuging
+     * @param map takes the hash map that contains all the rooms
+     */
     public static void printAllMap(HashMap<String, Room> map){
         for (String room : map.keySet()){
             System.out.println(room);
@@ -99,6 +112,12 @@ public class Main {
         }
 
     }
+
+    /**
+     * Prints the individual room, this basic just takes player pos and is used when enemys are dead
+     * @param room room object to print
+     * @param playerPos player position as int[2]
+     */
     public static void printRoom(Room room, int[] playerPos){
         int j = 0;
         for(ArrayList<String> line : room.getLayout()){
@@ -118,6 +137,12 @@ public class Main {
         }
     }
 
+    /**
+     *      * Prints the individual room,  is used when enemys are alive
+     * @param room room object to be printed
+     * @param playerPos player position as int[2]
+     * @param enemyPos enemy position as int[2]
+     */
     public static void printRoom(Room room, int[] playerPos, int[] enemyPos){
         int j = 0;
         for(ArrayList<String> line : room.getLayout()){
@@ -139,6 +164,13 @@ public class Main {
         }
     }
 
+    /**
+     * Prints the individual room,  is used when 2 enemy's are alive
+     * @param room room object to be printed
+     * @param playerPos player position as int[2]
+     * @param enemyPos enemy position as int[2]
+     * @param enemyPos2 enemy position as int[2]
+     */
     public static void printRoom(Room room, int[] playerPos, int[] enemyPos, int[] enemyPos2){
         int j = 0;
         for(ArrayList<String> line : room.getLayout()){
@@ -162,6 +194,14 @@ public class Main {
         }
     }
 
+    /**
+     * Stops players from getting in the wall or off the map, starts by checking if there at door or stairs then fixes
+     * @param room room to be checked aginst
+     * @param playerPos player pos as int[2]
+     * @param chestPos chest pos as int[2]
+     * @param stairsPos stairs pos as int[2]
+     * @return returns an int dictating next steps, maybe should all be done here...
+     */
     public static int verifyPlayerPos(Room room, int[] playerPos, int[] chestPos, int[] stairsPos) {
         if(playerPos[0] == room.getHeight()+1 && playerPos[1]== room.getEntrance()){
             return -1;
@@ -186,6 +226,13 @@ public class Main {
         return 0;
     }
 
+    /**
+     * Used to keep enemys in the map and test if they hit a player
+     * @param room room to be checked
+     * @param playerPos player pos as int[2]
+     * @param enemyPos enemy pos as int[2]
+     * @return returns and int for hit detection
+     */
     public static int verifyEnemyPos(Room room, int[] playerPos, int[] enemyPos) {
         if(enemyPos[0] == playerPos[0] && enemyPos[1]== playerPos[1]){
             return 1;
@@ -202,19 +249,25 @@ public class Main {
         return 0;
     }
     public static void main(String[] args) {
+
+        //Starts the game, creates classes used entire time
         startPrint();
         Scanner input = new Scanner(System.in);
         DateTimeFormatter time = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime now = LocalDateTime.now();
         FileOutputs myFile = new FileOutputs("RexQuest" + time.format(now));
+
+        //While loop to keep the game running until you don't wanna play anymore
         boolean play = true;
         while(play) {
             Player player = new Player();
             new KeyInput(player);
+            //rand used to create a seed thats easy to print
             Random rand1 = new Random(100000);
             int seed;
             int score = 0;
             int clearCounter = 0;
+            //Allows for players to choose their seed.
             while (true) {
                 System.out.println("Would you like to input a seed?\n'Yes' or 'No'");
                 if (input.nextLine().toLowerCase().equals("yes")) {
@@ -232,6 +285,7 @@ public class Main {
                 }
             }
             Random rand = new Random(seed);
+            //This keeps the player in a single game repeating each time they move up the stairs
             do {
                 HashMap<String, Room> currMap = new HashMap<String, Room>();
                 currMap = genMap(1, rand);
@@ -241,6 +295,7 @@ public class Main {
                 int enemyTouch1 = 0;
                 int enemyTouch2 = 0;
                 String roomNumString = "Room" + roomNum;
+                //intialy prints the room depeding on whats in it
                 if (currMap.get(roomNumString).getEnemyCount() == 1) {
                     if (currMap.get(roomNumString).getEnemy1().isAlive()) {
                         printRoom(currMap.get(roomNumString), player.getPlayerPos(), currMap.get(roomNumString).getEnemy1().getEnemyPos());
@@ -258,6 +313,7 @@ public class Main {
                         printRoom(currMap.get(roomNumString), player.getPlayerPos());
                     }
                 }
+                //Handles the single level and all rooms stays in till player goes up stairs or dies
                 int holdLevel = 1;
                 while (holdLevel == 1 && player.getHealth() != 0) {
                     while (player.getMoved()) {
@@ -277,6 +333,7 @@ public class Main {
                                 enemyTouch2 = verifyEnemyPos(currMap.get(roomNumString), player.getPlayerPos(), currMap.get(roomNumString).getEnemy2().getEnemyPos());
                             }
                         }
+                        //Enemy hit detectoin
                         if (enemyTouch1 == 1) {
                             player.damage();
                             currMap.get(roomNumString).getEnemy1().killEnemy();
@@ -287,6 +344,8 @@ public class Main {
                             currMap.get(roomNumString).getEnemy2().killEnemy();
                             enemyTouch2 = 0;
                         }
+
+                        //player goes upstairs
                         if (moveRoom == 3) {
                             if (player.useKey()) {
                                 holdLevel = 0;
@@ -295,12 +354,14 @@ public class Main {
                                 moveRoom = 0;
                             }
                         }
+                        //gets keys and disapears chests
                         if (moveRoom == 2) {
                             player.attainKeyFrags(currMap.get(roomNumString));
                             currMap.get(roomNumString).openChest();
                             player.keyComplete();
                             moveRoom = 0;
                         }
+                        //moves rooms
                         if (moveRoom == 0) {
                             if (currMap.get(roomNumString).getEnemyCount() == 1) {
                                 if (currMap.get(roomNumString).getEnemy1().isAlive()) {
@@ -356,22 +417,26 @@ public class Main {
                             }
                         }
                     }
+                    //this is to slow the loop down so it actually takes inputs.....  I couddnt find a better way
                     try {
                         Thread.sleep(100);
                     } catch (Exception e) {
                         System.out.println("baddd");
                     }
+                    //calculates score each time the player moves.... maybe over kill
                     score += (player.getBossKeyFrags() * 100) + (clearCounter * 500);
                 }
-
+            //conditons for do while
             } while (player.getHealth() != 0);
             System.out.println("Would you like to play again?\nYes or No");
             if(input.nextLine().toLowerCase().equals("no")){
                 play = false;
             }
+            //uses fileoutput to print info
             myFile.addPlay(score, seed);
         }
         myFile.printFile();
+        //ends teh game
         System.exit(0);
     }
 }

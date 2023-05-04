@@ -4,6 +4,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/*
+Gordon Gregory
+CSPC 1060
+May 2
+FileOutputs.java
+ */
+
+/**
+ * Used to handle the file output very generic
+ */
 public class FileOutputs {
     private ArrayList<String> scoreSeeds = new ArrayList<>();
     private String fileName;
